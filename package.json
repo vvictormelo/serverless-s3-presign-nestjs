@@ -1,0 +1,31 @@
+{
+  "name": "aws-s3-presign-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "deploy": "npx serverless@3 deploy",
+    "info": "npx serverless@3 info",
+    "remove": "npx serverless@3 remove"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@nestjs/common": "^11.1.13",
+    "@nestjs/core": "^11.1.13",
+    "@nestjs/platform-express": "^11.1.13",
+    "@vendia/serverless-express": "^4.12.6",
+    "aws-lambda": "^1.0.7",
+    "aws-sdk": "^2.1693.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.160",
+    "@types/node": "^25.2.1",
+    "serveless": "^0.0.2",
+    "typescript": "^5.9.3"
+  }
+}

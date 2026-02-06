@@ -1,0 +1,43 @@
+service: aws-s3-presign-api
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  stage: dev
+  environment:
+    UPLOAD_BUCKET: ${self:custom.uploadBucket}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:PutObject
+            - s3:GetObject
+          Resource:
+            - arn:aws:s3:::${self:custom.uploadBucket}/*
+        - Effect: Allow
+          Action:
+            - s3:ListBucket
+          Resource:
+            - arn:aws:s3:::${self:custom.uploadBucket}
+
+custom:
+  uploadBucket: ${self:service}-${sls:stage}-uploads
+
+functions:
+  api:
+    handler: dist/api/lambda.handler
+    memorySize: 256
+    timeout: 15
+    events:
+      - httpApi:
+          path: /{proxy+}
+          method: "*"
+
+resources:
+  Resources:
+    UploadsBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.uploadBucket}
