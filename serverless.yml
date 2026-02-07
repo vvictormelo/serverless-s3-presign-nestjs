@@ -34,6 +34,18 @@ functions:
       - httpApi:
           path: /{proxy+}
           method: "*"
+  
+  processor:
+    handler: dist/processor/handler.main
+    memorySize: 256
+    timeout: 30
+    events:
+      - s3:
+          bucket: ${self:custom.uploadBucket}
+          event: s3:ObjectCreated:*
+          existing: true
+          rules:
+            - prefix: uploads/
 
 resources:
   Resources:
