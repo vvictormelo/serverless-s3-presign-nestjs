@@ -2,3 +2,5 @@ node_modules/
 dist/
 .env
 .serverless/
+fase2.csv
+teste.csv

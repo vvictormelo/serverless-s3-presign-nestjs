@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Post, Get, Query } from "@nestjs/common";
 import { randomUUID } from "crypto";
 import { S3Service } from "./s3.service";
 
@@ -28,5 +28,26 @@ export class UploadsController {
     });
 
     return { key, uploadUrl };
+  }
+
+  @Get("/results")
+  async results(@Query("key") key: string) {
+    if (!key) {
+      return { error: "Missing key query param: key" };
+    }
+    
+    const resultKeys = key.startsWith("uploads/")
+      ? `results/${key.replace(/^uploads\//, "")}.json`
+      : key.startsWith("results/")
+        ? key
+        : `results/${key}.json`;
+
+    const bucket = process.env.UPLOAD_BUCKET;
+    if (!bucket) throw new Error("UPLOAD_BUCKET not set");
+
+    const data = await this.s3.getJsonObject(bucket, resultKeys);
+    return data;
+
+
   }
 }
